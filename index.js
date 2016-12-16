@@ -26,7 +26,8 @@ app.post('/webhook', function (req, res) {
   		
   		if(t){
   			var finalTemperature = parseInt(msg.main["temp"]) - 273.15; 
-  		res.status(200);
+  			finalTemperature = Math.round(finalTemperature);
+  			res.status(200);
   		 finalResponse = {
   						"speech": "Temperature right now is "+finalTemperature,
   						"displayText": "Temperature right now is "+finalTemperature
