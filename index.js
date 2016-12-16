@@ -2,8 +2,14 @@ var express = require('express');
 var app = express();
 var http = require('http');
 var server = require('http').createServer(app);
-var api = 'ada40a616d1ae5423a1ae8281bfe517c'
+var api = 'ada40a616d1ae5423a1ae8281bfe517c';
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -13,8 +19,8 @@ app.get('/webhook',function(req,res){
 
 app.post('/webhook', function (req, res) {
 
-	reqBody = JSON.parse(req.body);
-	var city = reqBody.result.parameters["geo-city"];
+	var city = req.body.result.parameters["geo-city"];
+	console.log(city)
    
   	getWeather(city,function(t,msg){
   		
