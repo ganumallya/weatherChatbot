@@ -13,8 +13,10 @@ app.get('/webhook',function(req,res){
 
 app.post('/webhook', function (req, res) {
 
+	reqBody = JSON.parse(req.body);
+	var city = reqBody.parameters["geo-city"];
    
-  	getWeather('bangalore',function(t,msg){
+  	getWeather(city,function(t,msg){
   		
   		if(t){
   			var finalTemperature = parseInt(msg.main["temp"]) - 273.15; 
