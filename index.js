@@ -10,11 +10,10 @@ app.get('/webhook',function(req,res){
 
 app.post('/webhook', function (req, res) {
 
-    finalResponse = {"fulfillment": {
+    finalResponse = {
   "speech": "Today in Boston: Fair, the temperature is 37 F",
   "source": "apiai-weather-webhook-sample",
-  "displayText": "Today in Boston: Fair, the temperature is 37 F"
-}};
+  "displayText": "Today in Boston: Fair, the temperature is 37 F"};
 		res.status(200)
 		res.send(finalResponse);
 });
