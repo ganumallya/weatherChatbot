@@ -60,7 +60,7 @@ app.post('/lalbus',function(req,res){
 	var email = '';
 	var responseLal ='';
 	var iName =req.body.result.metadata["intentName"];
-	console.log(iName);
+	var lalfinalResponse;	console.log(iName);
 	for(var i=0;i<lalBusDetails.length;i++){
 		if(lalBusDetails[i].contactNo == pNo){
 			name=lalBusDetails[i].name;
@@ -89,11 +89,20 @@ app.post('/lalbus',function(req,res){
 		};
 
 		res.status(200);
-		res.send(responseLal);
+		lalfinalResponse = {
+  						"speech": responseLal,
+  						"displayText": responseLal
+  						};
+		res.send(lalfinalResponse);
 	}else{
 		responseLal='Sorry :( , we couldnt find your emailID in our database';
 		res.status(200);
-		res.send(responseLal);
+		lalfinalResponse = {
+  						"speech": responseLal,
+  						"displayText": responseLal
+  						};
+		res.send(lalfinalResponse);
+		
 	};
 });
 
