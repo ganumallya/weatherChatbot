@@ -95,7 +95,7 @@ app.post('/lalbus',function(req,res){
   						};
 		res.send(lalfinalResponse);
 	}else{
-		responseLal='Sorry :( , we couldnt find your emailID in our database';
+		responseLal='Sorry :( , we couldnt find your Mobile in our database';
 		res.status(200);
 		lalfinalResponse = {
   						"speech": responseLal,
@@ -206,7 +206,7 @@ function getWeather(cName,callback){
 
 function iCancelFunc(pno){
 	for (var j=0; j<lalBusDetails.length;j++){
-		if(lalBusDetails[j].contactNo = pno){
+		if(lalBusDetails[j].contactNo == pno){
 			if(lalBusDetails[j].status){
 				lalBusDetails[j].status=0;
 				return 'The booking has been sucessfully cancelled ' + lalBusDetails[j].name + " ,Thanks for using Lalbus Chatbot";
