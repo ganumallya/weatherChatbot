@@ -17,19 +17,19 @@ var lalBusDetails=[
 	{
 		"name":"Akilesh",
 		"emailID":"akilesh@gmail.com",
-		"contactNo":9036444787,
+		"contactNo":903644786,
 		"status": 1
 	},
 	{
 		"name":"Kiran Nara",
 		"emailID":"kiran@gmail.com",
-		"contactNo":9036444787,
+		"contactNo":9036444785,
 		"status": 0
 	},
 	{
 		"name":"Kunal",
 		"emailID":"kunal@gmail.com",
-		"contactNo":9036444787,
+		"contactNo":9036444784,
 		"status": 1
 	}
 ];
