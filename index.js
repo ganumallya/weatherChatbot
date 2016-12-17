@@ -5,6 +5,36 @@ var server = require('http').createServer(app);
 var api = 'ada40a616d1ae5423a1ae8281bfe517c';
 var bodyParser = require('body-parser');
 
+
+
+var lalBusDetails=[
+	{
+		"name":"Ganesh Mallya",
+		"emailID":"ganumallya@yahoo.co.in",
+		"contactNo":9036444787,
+		"status": 1
+	},
+	{
+		"name":"Akilesh",
+		"emailID":"akilesh@gmail.com",
+		"contactNo":9036444787,
+		"status": 1
+	},
+	{
+		"name":"Kiran Nara",
+		"emailID":"kiran@gmail.com",
+		"contactNo":9036444787,
+		"status": 0
+	},
+	{
+		"name":"Kunal",
+		"emailID":"kunal@gmail.com",
+		"contactNo":9036444787,
+		"status": 1
+	}
+];
+
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -15,6 +45,56 @@ app.set('port', (process.env.PORT || 5000));
 
 app.get('/webhook',function(req,res){
 	res.write('<h1> In Webhook </h1>');
+});
+
+
+app.get('/lalbus',function(req,res){
+	res.write('<h1> Welcome to Lalbus </h1>');
+});
+
+app.post('/lalbus',function(req,res){
+	var name='';
+	var status='';
+	var pNo=parseInt(req.body.result.parameters["contactNo"]);
+	var found = 0;
+	var email = '';
+	var responseLal ='';
+	var iName =req.body.result.metadata["intentName"];
+	console.log(iName);
+	for(var i=0;i<lalBusDetails.length;i++){
+		if(lalBusDetails[i].contactNo == pNo){
+			name=lalBusDetails[i].name;
+			status =lalBusDetails[i].status;
+			pNo = lalBusDetails[i].contactNo;
+			found = 1;
+		}
+	};
+
+	if (found){
+		switch(iName){
+			case 'Icancel':
+				responseLal = iCancelFunc(pNo);
+				console.log("Response LaL :: "+responseLal);
+				break;
+			case 'Irefund':
+				responseLal = iRefundFunc(name);
+				console.log("Response LaL :: "+responseLal);
+				break;
+			case 'iWrongDebit':
+				responseLal = iWrongDebitFunc(name);
+				console.log("Response LaL :: "+responseLal);
+				break;
+			 default:
+				responseLal = 'Sorry i couldnt understand the intention of this question';
+		};
+
+		res.status(200);
+		res.send(responseLal);
+	}else{
+		responseLal='Sorry :( , we couldnt find your emailID in our database';
+		res.status(200);
+		res.send(responseLal);
+	};
 });
 
 app.post('/webhook', function (req, res) {
@@ -112,4 +192,25 @@ function getWeather(cName,callback){
 
 	req.end();
 	callback(0);
-}
+};
+
+
+function iCancelFunc(pno){
+	for (var j=0; j<lalBusDetails.length;j++){
+		if(lalBusDetails[j].contactNo = pno){
+			if(lalBusDetails[j].status){
+				lalBusDetails[j].status=0;
+				return 'The booking has been sucessfully cancelled ' + lalBusDetails[j].name + " ,Thanks for using Lalbus Chatbot";
+			}else{
+				return 'Hey ' + lalBusDetails[j].name + ", i couldnt find any active booking under your name.";
+			}
+		}
+	}
+};
+
+function iRefundFunc(pno){
+	return 'Hey '+ pno +', the refund is already initiated from our side :) , it should reach you anytime soon';
+};
+function iWrongDebitFunc(pno){
+	return 'Hey '+ pno + ', Sorry for the trouble caused, we have started refund process, the money will be in your account in 5 working days';
+};
