@@ -110,7 +110,7 @@ var wifiDetails =[
 		"price":5000,
 		"warranty":2,
 		"releaseDate":"November 2016",
-		"ghz":2.3,
+		"ghz":[2.3],
 		"connectDevices":4,
 		"maxspeed":5,
 		"discount":15,
@@ -128,7 +128,7 @@ var wifiDetails =[
 		"price":4500,
 		"warranty":2,
 		"releaseDate":"December 2016",
-		"ghz":2.5,
+		"ghz":[2.5],
 		"connectDevices":6,
 		"maxspeed":4,
 		"discount":15,
@@ -146,7 +146,7 @@ var wifiDetails =[
 		"price":4000,
 		"warranty":1,
 		"releaseDate":"January 2016",
-		"ghz":5,
+		"ghz":[2.5,5],
 		"connectDevices":6,
 		"maxspeed":2.5,
 		"discount":0,
@@ -164,7 +164,7 @@ var wifiDetails =[
 		"price":4000,
 		"warranty":1.5,
 		"releaseDate":"March 2016",
-		"ghz":4,
+		"ghz":[4],
 		"connectDevices":4,
 		"maxspeed":4,
 		"discount":10,
@@ -385,6 +385,11 @@ app.post('/modem',function(req,res){
 	var tLatest = false;
 	var tFast = false;
 	var tOffer = false;
+	var tWarranty = false;
+	var tGhz = false;
+	var tMaxdevices = false;
+	var tShipping = false;
+
 	var speech = '';
 	var itemDetail;
 	console.log('Got a requuest');
@@ -412,6 +417,18 @@ app.post('/modem',function(req,res){
 					break;
 				case 'best':
 					tBest=true;
+					break;
+				case 'warranty':
+					tWarranty=true;
+					break;
+				case 'ghz':
+					tGhz =true;
+					break;
+				case 'maxdevices':
+					tMaxdevices=true;
+					break;
+				case 'shipping':
+					tShipping = true;
 					break;
 				default:
 					break;
@@ -463,6 +480,22 @@ app.post('/modem',function(req,res){
 				}
 				
 				speech = 'The ' + mVmodem + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			}else if(tWarranty){
+				if(mVmodem=='modem'){
+					itemDetail = mFOffer(wifiDetails);
+				}else if(mVmodem=='Extender'){
+					itemDetail = mFOffer(extenderDetails);
+				}
+				
+				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			}else if(tShipping){
+				if(mVmodem=='modem'){
+					speech = 'The shipping charges are free of cost for all the Wifi modems. :) '; 
+				}else if(mVmodem=='Extender'){
+					speech = 'Except for  Nighthawk® X4S AC2600 Smart WiFi Gaming Router(model No. R7800) which has 20$ as shipping charges, rest all the wifi extenders have no shipping cost :) '; 
+				}
+				
+				
 			};
 		};
 
@@ -472,8 +505,27 @@ app.post('/modem',function(req,res){
   						};
 		res.send(finalResponse);
 
-	}else if(mVacation == 'buyType'){
+	}else if(mVaction == 'Aghz'){
+		mVmodem = req.body.result.parameters.eModem;
+		mVBand = parseInt(req.body.result.parameters.number);
+		if(mVmodem== 'Modem'){
+			itemDetail = mFghz(wifiDetails,mVBand);
 
+		}else if(mVmodem =='Extender'){
+			itemDetail = mFghz(extenderDetails,mVBand);
+		}
+
+		if(itemDetail.found){
+			speech = 'We have a product that matches your Ghz Band Requirement '+ 'The model no. is '+ itemDetail.item.modelNo + ', and name of the product is '+itemDetail.item.name+'. Would you like to know anything more about this product or do you want me to send the URL for buying this product?';
+		}else{
+			speech = 'Sorry :( We couldnt find the product with the Ghz Band requirement that you were looking for , the closest we could find was '+itemDetail.item.name +'and Model No. is ' + itemDetail.item.modelNo+'. Would you like to know anything more about this product or do you want me to send the URL for buying this model';
+
+		}
+		var finalResponse = {
+  						"speech": speech,
+  						"displayText": speech
+  						};
+		res.send(finalResponse);
 	}
 });
 
@@ -538,3 +590,44 @@ function mFfast(item){
 	};
 	return item[tempFastItem];
 };
+
+	// Find the device with the best match for the given GHZ band
+
+function mFghz(item,ghz){
+	var tempItem = 0;
+	var tempGhz = 0;
+	var tempGhzDiff = 100;
+
+	for(var i=0;i<item.length;i++){
+		for(var j=0;j<item[i].ghz.length;j++){
+
+			
+				// find the item with least difference
+			if(ghz>item[i].ghz[j]){ //Alternative for taking mod of the Subtracted result, by finding the greater of two and then subtracting.
+				if((ghz -item[i].ghz[j]) < tempGhz){
+				tempItem = i;
+					}
+			}else{
+				if((item[i].ghz[j]-ghz) < tempGhz){
+				tempItem = i;
+					}
+			}
+
+			tempGhz=item[i].ghz[j];
+			tempGhzDiff = ghz - tempGhz;
+			
+			//  If we hit a jackpot with exact match
+			if(tempGhzDiff==0){
+				return {
+					found:1,
+					item:item[i]
+				};
+			}
+		}
+	}
+
+	return{
+		found:0,
+		item:item[tempItem]
+	}
+}
