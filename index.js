@@ -442,15 +442,17 @@ app.post('/modem',function(req,res){
 		}else if(mVCount==1){
 		
 			if(tBest){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					itemDetail = mFbest(wifiDetails);
+
 				}else if(mVmodem=='Extender'){
 					itemDetail = mFbest(extenderDetails);
+
 				}
 				
 				speech = 'The best rated '+ mVmodem+' in netgear is  ' + itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 			}else if(tCheap){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					itemDetail = mFcheap(wifiDetails);
 				}else if(mVmodem=='Extender'){
 					itemDetail = mFcheap(extenderDetails);
@@ -458,14 +460,14 @@ app.post('/modem',function(req,res){
 				
 				speech = 'The Cheapest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 			}else if(tLatest){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					speech = 'The latest product of net gear Wifi Modem is  Nighthawk X8 AC5300. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 				}else if(mVmodem=='Extender'){
 					speech = 'The latest product of net gear Wifi Extender is  Nighthawk® X4 AC2200 . Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 				}
 				
 			}else if(tFast){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					itemDetail = mFfast(wifiDetails);
 				}else if(mVmodem=='Extender'){
 					itemDetail = mFfast(extenderDetails);
@@ -473,7 +475,7 @@ app.post('/modem',function(req,res){
 				
 				speech = 'The Fastest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 			}else if(tOffer){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					itemDetail = mFOffer(wifiDetails);
 				}else if(mVmodem=='Extender'){
 					itemDetail = mFOffer(extenderDetails);
@@ -481,7 +483,7 @@ app.post('/modem',function(req,res){
 				
 				speech = 'The ' + mVmodem + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 			}else if(tWarranty){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					itemDetail = mFOffer(wifiDetails);
 				}else if(mVmodem=='Extender'){
 					itemDetail = mFOffer(extenderDetails);
@@ -489,7 +491,7 @@ app.post('/modem',function(req,res){
 				
 				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
 			}else if(tShipping){
-				if(mVmodem=='modem'){
+				if(mVmodem=='Modem'){
 					speech = 'The shipping charges are free of cost for all the Wifi modems. :) '; 
 				}else if(mVmodem=='Extender'){
 					speech = 'Except for  Nighthawk® X4S AC2600 Smart WiFi Gaming Router(model No. R7800) which has 20$ as shipping charges, rest all the wifi extenders have no shipping cost :) '; 
