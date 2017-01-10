@@ -35,6 +35,153 @@ var lalBusDetails=[
 ];
 
 
+// Product Details
+
+var extenderDetails = [
+	{
+		"id":1,
+		"name":"Nighthawk® X4 AC2200 ",
+		"modelNo":"EX7300",
+		"price":500,
+		"warranty":1,
+		"releaseDate":"June 2016",
+		"ghz":[2.4,5],
+		"coverage":930,
+		"maxspeed":2.2,
+		"discount":15,
+		"rating":1,
+		"shipping":0,
+		"stock":15,
+		"refund":"30 Days Refund",
+		"support":"90 days from date of purchase 24/7",
+		"analytics":1,
+		"antennas":0,
+		"features":"Works with any wifi router,Dual Band",
+		"url":"www.netgear.com"
+	},
+	{
+		"id":2,
+		"name":"Nighthawk® X4 AC1900 ",
+		"modelNo":"EX7400",
+		"price":450,
+		"warranty":1,
+		"releaseDate":"Jan 2016",
+		"ghz":[2.4,5],
+		"coverage":700,
+		"maxspeed":1.9,
+		"discount":0,
+		"rating":2,
+		"shipping":0,
+		"stock":10,
+		"refund":"No Refund",
+		"support":"60 days from date of purchase 24/7",
+		"analytics":1,
+		"antennas":1,
+		"features":"Dual Band Wifi,Dual Core 1 Ghz Processor,Fast Lane Technology,USB3.0",
+		"url":"www.netgear.com"
+	},
+	{
+		"id":3,
+		"name":"Wifi Range Extender Essential Edition",
+		"modelNo":"EX6400",
+		"price":200,
+		"warranty":1,
+		"releaseDate":"March 2015",
+		"ghz":[2.5,5],
+		"coverage":400,
+		"maxspeed":1,
+		"discount":0,
+		"rating":3,
+		"shipping":0,
+		"stock":20,
+		"refund":"No Refund",
+		"support":"14 days from date of purchase 24/7",
+		"analytics":0,
+		"antennas":1,
+		"features":"Fast Lane Technology,Cheap,Dual Band",
+		"url":"www.netgear.com"
+	}
+];
+var wifiDetails =[
+	{
+		"id":1,
+		"name":"Nighthawk X10 AD7200",
+		"modelNo":"R9000",
+		"price":5000,
+		"warranty":2,
+		"releaseDate":"November 2016",
+		"ghz":2.3,
+		"connectDevices":4,
+		"maxspeed":5,
+		"discount":15,
+		"rating":2,
+		"shipping":0,
+		"stock":10,
+		"refund":"No Refund",
+		"features":"Ultra Smooth 4k Streaming,Vr Gaming and Instant Downloads",
+		"url":"www.netgear.com"
+	},
+	{
+		"id":2,
+		"name":"Nighthawk X8 AC5300",
+		"modelNo":"R8500",
+		"price":4500,
+		"warranty":2,
+		"releaseDate":"December 2016",
+		"ghz":2.5,
+		"connectDevices":6,
+		"maxspeed":4,
+		"discount":15,
+		"rating":3,
+		"shipping":0,
+		"stock":15,
+		"refund":"30 Days Refund",
+		"features":"Amplified Wifi Range,Port Aggregation, 2 extra ports",
+		"url":"www.netgear.com"
+	},
+	{
+		"id":3,
+		"name":"Nighthawk X6 AC3200",
+		"modelNo":"R8000",
+		"price":4000,
+		"warranty":1,
+		"releaseDate":"January 2016",
+		"ghz":5,
+		"connectDevices":6,
+		"maxspeed":2.5,
+		"discount":0,
+		"rating":4,
+		"shipping":0,
+		"stock":12,
+		"refund":"30 Days Refund",
+		"features":"Tri Band Technology",
+		"url":"www.netgear.com"
+	},
+	{
+		"id":4,
+		"name":"Nighthawk® X4S AC2600 Smart WiFi Gaming Router",
+		"modelNo":"R7800",
+		"price":4000,
+		"warranty":1.5,
+		"releaseDate":"March 2016",
+		"ghz":4,
+		"connectDevices":4,
+		"maxspeed":4,
+		"discount":10,
+		"rating":1,
+		"shipping":20,
+		"stock":11,
+		"refund":"30 Days Refund",
+		"features":"Low Ping and Best Stream Quality",
+		"url":"www.netgear.com"
+	}
+];
+
+
+
+
+
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -158,9 +305,11 @@ app.post('/webhook', function (req, res) {
   
 });
 
+
+
 app.get('/',function(req,res){
 	res.write('<h1>Home Page</h1>');
-})
+});
 
 
 app.listen(app.get('port'),function(){
@@ -222,4 +371,170 @@ function iRefundFunc(pno){
 };
 function iWrongDebitFunc(pno){
 	return 'Hey '+ pno + ', Sorry for the trouble caused, we have started refund process, the money will be in your account in 5 working days';
+};
+
+		// Webhook for the Modem requests
+
+app.post('/modem',function(req,res){
+	var mVaction = req.body.result.action;
+	var mVmodem='';
+	var mVtype=[];
+	var mVCount;
+	var tBest = false;
+	var tCheap = false;
+	var tLatest = false;
+	var tFast = false;
+	var tOffer = false;
+	var speech = '';
+	var itemDetail;
+	console.log('Got a requuest');
+
+	if(mVaction == 'type'){
+		mVmodem = req.body.result.parameters.eModem;
+
+		mVtype = req.body.result.parameters.eType;
+		mVCount = mVtype.length;
+		console.log(mVmodem,mVtype);
+
+		for(i=0;i<mVtype.length;i++){
+			switch(mVtype[i]){
+				case 'latest':
+					tLatest = true; 
+					break;
+				case 'cheap':
+					tCheap = true;
+					break;
+				case 'offer':
+					tOffer = true;
+					break;
+				case 'fast':
+					tFast = true;
+					break;
+				case 'best':
+					tBest=true;
+					break;
+				default:
+					break;
+			}
+		};
+		console.log(mVCount);
+		if(mVCount==3){
+
+		}else if(mVCount==2){
+
+		}else if(mVCount==1){
+		
+			if(tBest){
+				if(mVmodem=='modem'){
+					itemDetail = mFbest(wifiDetails);
+				}else if(mVmodem=='Extender'){
+					itemDetail = mFbest(extenderDetails);
+				}
+				
+				speech = 'The best rated '+ mVmodem+' in netgear is  ' + itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			}else if(tCheap){
+				if(mVmodem=='modem'){
+					itemDetail = mFcheap(wifiDetails);
+				}else if(mVmodem=='Extender'){
+					itemDetail = mFcheap(extenderDetails);
+				}
+				
+				speech = 'The Cheapest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			}else if(tLatest){
+				if(mVmodem=='modem'){
+					speech = 'The latest product of net gear Wifi Modem is  Nighthawk X8 AC5300. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+				}else if(mVmodem=='Extender'){
+					speech = 'The latest product of net gear Wifi Extender is  Nighthawk® X4 AC2200 . Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+				}
+				
+			}else if(tFast){
+				if(mVmodem=='modem'){
+					itemDetail = mFfast(wifiDetails);
+				}else if(mVmodem=='Extender'){
+					itemDetail = mFfast(extenderDetails);
+				}
+				
+				speech = 'The Fastest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			}else if(tOffer){
+				if(mVmodem=='modem'){
+					itemDetail = mFOffer(wifiDetails);
+				}else if(mVmodem=='Extender'){
+					itemDetail = mFOffer(extenderDetails);
+				}
+				
+				speech = 'The ' + mVmodem + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
+			};
+		};
+
+		var finalResponse = {
+  						"speech": speech,
+  						"displayText": speech
+  						};
+		res.send(finalResponse);
+
+	}else if(mVacation == 'buyType'){
+
+	}
+});
+
+// Get Request for/Modem 
+
+app.get('/modem',function(req,res){
+	res.write('<h1> Hello welcome to Net Gear');
+});
+
+
+
+
+					//Generic functions to get the details of modem......
+
+	//Find the Best Item
+function mFbest(item){
+	var tempBestItem = 0;
+	var tempBestNo = 100;
+	for(var i = 0;i<item.length;i++){
+		if(item[i].rating < tempBestNo){
+			tempBestItem = i;
+			tempBestNo = item[i].rating;
+		}
+	};
+	return item[tempBestItem];
+};
+
+	//Find the Cheapest Item
+function mFcheap(item){
+	var tempCheapItem = 0;
+	var tempPrice = 100000;
+	for(var i = 0;i<item.length;i++){
+		if(item[i].price < tempPrice){
+			tempCheapItem = i;
+			tempPrice = item[i].price;
+		}
+	};
+	return item[tempCheapItem];
+};
+
+	// Find the one with highest Discount
+function mFOffer(item){
+	var tempOfferItem = 0;
+	var tempOffer = 0;
+	for(var i = 0;i<item.length;i++){
+		if(item[i].discount > tempOffer){
+			tempOfferItem = i;
+			tempOffer = item[i].discount;
+		}
+	};
+	return item[tempOfferItem];
+};
+	// Find the one with Highest Speed
+function mFfast(item){
+	var tempFastItem = 0;
+	var tempSpeed = 0;
+	for(var i = 0;i<item.length;i++){
+		if(item[i].maxspeed > tempSpeed){
+			tempFastItem = i;
+			tempSpeed = item[i].maxspeed;
+		}
+	};
+	return item[tempFastItem];
 };
