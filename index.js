@@ -571,7 +571,22 @@ app.post('/modem',function(req,res){
 
 		}
 		
-		var finalResponse
+		var finalResponse;
+		tempContext = {
+			"name":"device",
+			"parameters":{
+				"id":mVdeviceId,
+				"type":mVmodem,
+				"model":mVdeviceModel
+			},
+			"lifespan":1
+		};
+		mContext.push(tempContext);
+		var finalResponse = {
+  						"speech": speech,
+  						"displayText": speech,
+  						"contextOut":[mContext,tempContext]
+  						};
 		var finalResponse = {
   						"speech": tempSpeech.speech,
   						"displayText": tempSpeech.speech,
