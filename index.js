@@ -551,6 +551,34 @@ app.post('/modem',function(req,res){
   						"contextOut":[mContext,tempContext]
   						};
 		res.send(finalResponse);
+	}else if(mVaction =='productinfo'){
+		mVmodem = req.body.result.parameters.devicetype;
+		mContext = req.body.result.contexts;
+		var mVfeature = req.body.result.parameters.Efeature;
+		var mVdeviceId = req.body.result.parameters.deviceid;
+		var mVdeviceModel = req.body.result.parameters.devicemodel;
+		var tempSpeech='';
+		if(mVmodem=='Modem'){
+			tempSpeech =getDetails(wifiDetails,mVdeviceModel,mVfeature);
+			console.log(tempSpeech);
+		}else if(mVmodem=='Extender'){
+			tempSpeech = getDetails(extenderDetails,mVdeviceModel,mVfeature);
+		}
+		if(tempSpeech.found==0){
+			tempSpeech.speech = "Sorry , I dont have much info about that feature in that Product, you could ask me info about any other feature.";
+		}else{
+			tempSpeech.speech = tempSpeech.speech + '. Would you want to know anything more about this product, or do you want to buy this product?';
+
+		}
+		
+		var finalResponse
+		var finalResponse = {
+  						"speech": tempSpeech.speech,
+  						"displayText": tempSpeech.speech,
+  						"contextOut":mContext
+  						};
+		res.send(finalResponse);
+
 	}
 });
 
@@ -655,4 +683,110 @@ function mFghz(item,ghz){
 		found:0,
 		item:item[tempItem]
 	}
+}
+
+	//Gets the Information of particular feature of the specific model of Correct type of Modem
+
+function getFeature(item,model,feature){
+	var result;
+	console.log('asd '+model,feature);
+	for(var i=0;i<item.length;i++){
+		if (item[i].modelNo==model){
+			result = item[i][feature];
+			console.log('found the model'+result);
+			return {
+				"found":1,
+				"result":result
+			};
+		}
+	}
+		console.log('coulcnt find the model no.');
+		return {
+			"found":0
+		}
+}
+	// gets the Details of the particular Entity type 't' from item type 'item'
+function getDetails(item,model,t){
+	var tempRes ;
+	switch(t){
+		case 'price':
+			tempRes = getFeature(item,model,'price');
+			tempRes.speech = "The price of the product is " + tempRes.result;
+			break;
+
+		case 'model':
+			tempRes = getFeature(item,model,'modelNo');
+			tempRes.speech = "The Model No. of the product is " + tempRes.result;
+			break;
+
+		case 'warranty':
+			tempRes = getFeature(item,model,'warranty');
+			tempRes.speech = "This product has warranty for " + tempRes.result + 'years ';
+			break;
+
+		case 'release':
+			tempRes = getFeature(item,model,'releaseDate');
+			tempRes.speech = "This product was released to market on " + tempRes.result;
+			break;
+
+		case 'ghz':
+			tempRes = getFeature(item,model,'ghz');
+			tempRes.speech = "This product works on ";
+			for (var i =0;i<tempRes.result.length;i++){
+				if(i == (tempRes.result.length -1)){
+					tempRes.speech = tempRes.speech + tempRes.result[i] +'Ghz';
+				}else
+				{
+					tempRes.speech = tempRes.speech + tempRes.result[i] +'Ghz ,';
+				}
+			}
+			break;
+
+		case 'device':
+			if(item=='wifiDetails'){
+				tempRes = getFeature(item,model,'connectDevices');
+				tempRes.speech= "This product can connect upto "+tempRes.result+" no. of devices";
+			}else if(item=='extenderDetails'){
+				tempRes = getFeature(item,model,'coverage');
+				tempRes.speech= "This product has coverage of "+tempRes.result+" Square meter.";
+			}
+			break;
+
+		case 'speed':
+			tempRes = getFeature(item,model,'maxspeed');
+			tempRes.speech= "This product has a max speed of "+tempRes.result;
+			break;
+
+		case 'discount':
+			tempRes = getFeature(item,model,'discount');
+			tempRes.speech= "This product has a discount of "+tempRes.result + '%';
+			break;
+
+		case 'rating':
+			tempRes = getFeature(item,model,'rating');
+			tempRes.speech= "This Rating for this product is ::  "+tempRes.result;
+			break;
+
+		case 'shipping':
+			tempRes = getFeature(item,model,'shipping');
+			if(tempRes.result>0){
+				tempRes.speech= "This product has a shipping charges of  "+tempRes.result;
+			}else{
+				tempRes.speech= "This product does no shipping charges, Its absolutely free";
+			}
+			
+			break;
+
+		case 'special':
+			tempRes = getFeature(item,model,'features');
+			tempRes.speech= "This product have following features, "+tempRes.result;
+			break;
+
+		default :
+			tempRes = {"found":0};
+			break;
+
+	}
+
+	return tempRes;	
 }
