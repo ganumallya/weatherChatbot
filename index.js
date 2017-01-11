@@ -377,6 +377,7 @@ function iWrongDebitFunc(pno){
 
 app.post('/modem',function(req,res){
 	var mVaction = req.body.result.action;
+	var mContext = req.body.result.contexts[0];
 	var mVmodem='';
 	var mVtype=[];
 	var mVCount;
@@ -389,6 +390,7 @@ app.post('/modem',function(req,res){
 	var tGhz = false;
 	var tMaxdevices = false;
 	var tShipping = false;
+	var tempContext;
 
 	var speech = '';
 	var itemDetail;
@@ -501,9 +503,20 @@ app.post('/modem',function(req,res){
 			};
 		};
 
+		tempContext = {
+			"name":"device",
+			"parameters":{
+				"id":itemDetail.id,
+				"type":mVmodem,
+				"model":itemDetail.modelNo
+			},
+			"lifespan":1
+		};
+
 		var finalResponse = {
   						"speech": speech,
-  						"displayText": speech
+  						"displayText": speech,
+  						"contextOut":[mContext,tempContext]
   						};
 		res.send(finalResponse);
 
@@ -523,9 +536,19 @@ app.post('/modem',function(req,res){
 			speech = 'Sorry :( We couldnt find the product with the Ghz Band requirement that you were looking for , the closest we could find was '+itemDetail.item.name +'and Model No. is ' + itemDetail.item.modelNo+'. Would you like to know anything more about this product or do you want me to send the URL for buying this model';
 
 		}
+		tempContext = {
+			"name":"device",
+			"parameters":{
+				"id":itemDetail.id,
+				"type":mVmodem,
+				"model":itemDetail.modelNo
+			},
+			"lifespan":1
+		};
 		var finalResponse = {
   						"speech": speech,
-  						"displayText": speech
+  						"displayText": speech,
+  						"contextOut":[mContext,tempContext]
   						};
 		res.send(finalResponse);
 	}
