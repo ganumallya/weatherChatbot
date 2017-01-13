@@ -505,7 +505,7 @@ app.post('/modem',function(req,res){
 
 		}else if(mVaction == 'iProductFeature'){
 			mVtype = req.body.result.parameters.devicetype;
-			mVfeature = req.body.result.parameters.feature;
+			mVfeature = req.body.result.parameters.epFeature;
 			mVmodel = req.body.result.parameters.modelno;
 			var tempresult;
 			if(mVtype=='router'){
