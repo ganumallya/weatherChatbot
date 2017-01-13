@@ -533,6 +533,34 @@ app.post('/modem',function(req,res){
 			}
 			res.send(finalResponse);
 
+		}else if(mVaction == 'iList'){
+			mVtype = req.body.result.parameters.devicetype;
+
+			var tempType;
+			if (mVtype=='router'){
+				tempType=wifiDetails;
+			}else if(mVtype=='extender'){
+				tempType=extenderDetails;
+			}
+			speech = " Model No.	Name\
+			"+
+			for (var i=0;i<tempType.length;i++){
+				speech = speech + tempType[i].modelNo +"	"+tempType[i].name+"\
+				";
+			}
+			tempContext = {
+				"name":"contextone",
+				"parameters":{
+					"devicetype":mVtype
+				}
+			};
+
+			finalResponse = {
+					"speech":speech,
+					"displayText":speech,
+					"contextOut":[tempContext]
+			}
+			res.send(finalResponse);
 		}
 
 	});
