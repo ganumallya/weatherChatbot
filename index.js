@@ -523,17 +523,21 @@ app.post('/modem',function(req,res){
 			tempContext = {
 				"name":"contextone",
 				"parameters":{
-					"devicetype":mVtype;
+					"devicetype":mVtype
 				}
 			};
 
 			finalResponse = {
-					"speech":"Is there any specific model or feature that you are looking for? or do you want me to list out all the products?",
-					"displayText":"Is there any specific model or feature that you are looking for? or do you want me to list out all the products?",
+					"speech":"Is there any specific model or feature that you are looking for? or do you want me to list out all the"+mVtype+"?",
+					"displayText":"Is there any specific model or feature that you are looking for? or do you want me to list out all the"+mVtype+"?",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
-		};
+		}else if(mVaction == 'iFeature'){
+			mVtype = req.body.result.parameters.eDevice;
+		}
+
+	});
 
 // Get Request for/Modem 
 
