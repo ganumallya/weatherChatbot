@@ -381,144 +381,22 @@ app.post('/modem',function(req,res){
 	var mVmodem='';
 	var mVtype=[];
 	var mVCount;
-	var tBest = false;
-	var tCheap = false;
-	var tLatest = false;
-	var tFast = false;
+	var tBest=false;
+	var tCheap=false;
+	var tFast=false;
 	var tOffer = false;
 	var tWarranty = false;
-	var tGhz = false;
-	var tMaxdevices = false;
-	var tShipping = false;
+	var tDevices = false;
 	var tempContext;
+	var mVfeature;
 	var finalResponse;
 
 	var speech = '';
 	var itemDetail;
 	console.log('Got a requuest');
 
-	if(mVaction == 'type'){
-		mVmodem = req.body.result.parameters.eModem;
-
-		mVtype = req.body.result.parameters.eType;
-		mVCount = mVtype.length;
-		console.log(mVmodem,mVtype);
-
-		for(i=0;i<mVtype.length;i++){
-			switch(mVtype[i]){
-				case 'latest':
-					tLatest = true; 
-					break;
-				case 'cheap':
-					tCheap = true;
-					break;
-				case 'offer':
-					tOffer = true;
-					break;
-				case 'fast':
-					tFast = true;
-					break;
-				case 'best':
-					tBest=true;
-					break;
-				case 'warranty':
-					tWarranty=true;
-					break;
-				case 'ghz':
-					tGhz =true;
-					break;
-				case 'maxdevices':
-					tMaxdevices=true;
-					break;
-				case 'shipping':
-					tShipping = true;
-					break;
-				default:
-					break;
-			}
-		};
-		console.log(mVCount);
-		
-		
-			if(tBest){
-				if(mVmodem=='Modem'){
-					itemDetail = mFbest(wifiDetails);
-
-				}else if(mVmodem=='Extender'){
-					itemDetail = mFbest(extenderDetails);
-
-				}
-				
-				speech = 'The best rated '+ mVmodem+' in netgear is  ' + itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-			}else if(tCheap){
-				if(mVmodem=='Modem'){
-					itemDetail = mFcheap(wifiDetails);
-				}else if(mVmodem=='Extender'){
-					itemDetail = mFcheap(extenderDetails);
-				}
-				
-				speech = 'The Cheapest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-			}else if(tLatest){
-				if(mVmodem=='Modem'){
-					speech = 'The latest product of net gear Wifi Modem is  Nighthawk X8 AC5300. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-				}else if(mVmodem=='Extender'){
-					speech = 'The latest product of net gear Wifi Extender is  Nighthawk® X4 AC2200 . Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-				}
-				
-			}else if(tFast){
-				if(mVmodem=='Modem'){
-					itemDetail = mFfast(wifiDetails);
-				}else if(mVmodem=='Extender'){
-					itemDetail = mFfast(extenderDetails);
-				}
-				
-				speech = 'The Fastest ' + mVmodem + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-			}else if(tOffer){
-				if(mVmodem=='Modem'){
-					itemDetail = mFOffer(wifiDetails);
-				}else if(mVmodem=='Extender'){
-					itemDetail = mFOffer(extenderDetails);
-				}
-				
-				speech = 'The ' + mVmodem + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-			}else if(tWarranty){
-				if(mVmodem=='Modem'){
-					itemDetail = mFOffer(wifiDetails);
-				}else if(mVmodem=='Extender'){
-					itemDetail = mFOffer(extenderDetails);
-				}
-				
-				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want me to send the URL for buying this product?' ;
-			}else if(tShipping){
-				if(mVmodem=='Modem'){
-					speech = 'The shipping charges are free of cost for all the Wifi modems. :) '; 
-				}else if(mVmodem=='Extender'){
-					speech = 'Except for  Nighthawk® X4S AC2600 Smart WiFi Gaming Router(model No. R7800) which has 20$ as shipping charges, rest all the wifi extenders have no shipping cost :) '; 
-				}
-				
-				
-			};
-	
-
-		tempContext = {
-			"name":"device",
-			"parameters":{
-				"id":itemDetail.id,
-				"type":mVmodem,
-				"model":itemDetail.modelNo
-			},
-			"lifespan":1
-		};
-
-		var finalResponse = {
-  						"speech": speech,
-  						"displayText": speech,
-  						"contextOut":[mContext,tempContext]
-  						};
-		res.send(finalResponse);
-
-	}else if(mVaction == 'iDirect'){
-		mVtype = req.body.result.parameters.eDevice;
+	if(mVaction == 'iDirect'){
+		mVtype = req.body.result.parameters.devicetype;
 			
 			tempContext = {
 				"name":"contextone",
@@ -534,7 +412,97 @@ app.post('/modem',function(req,res){
 			}
 			res.send(finalResponse);
 		}else if(mVaction == 'iFeature'){
-			mVtype = req.body.result.parameters.eDevice;
+			mVtype = req.body.result.parameters.devicetype;
+			mVfeature = req.body.result.parameters.feature;
+
+			//decides the feature 
+
+				switch(mVfeature){
+				case 'cheap':
+					tCheap = true; 
+					break;
+				case 'best':
+					tBest = true;
+					break;
+				case 'fast':
+					tFast = true;
+					break;
+				case 'offer':
+					tOffer = true;
+					break;
+				case 'warranty':
+					tWarranty=true;
+					break;
+				case 'devices':
+					tDevices=true;
+					break;
+			};
+
+			//speech formation begins
+
+			if(tBest){
+				if(mVtype=='router'){
+					itemDetail = mFbest(wifiDetails);
+
+				}else if(mVtype=='extender'){
+					itemDetail = mFbest(extenderDetails);
+
+				}
+				
+				speech = 'The best rated '+ mVtype+' in netgear is  ' + itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+
+			}else if(tCheap){
+
+				if(mVtype=='router'){
+					itemDetail = mFcheap(wifiDetails);
+				}else if(mVtype=='extender'){
+					itemDetail = mFcheap(extenderDetails);
+				}
+				
+				speech = 'The Cheapest ' + mVtype + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+			}else if(tFast){
+				if(mVtype=='router'){
+					itemDetail = mFfast(wifiDetails);
+				}else if(mVtype=='extender'){
+					itemDetail = mFfast(extenderDetails);
+				}
+				
+				speech = 'The Fastest ' + mVtype + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+			}else if(tOffer){
+				if(mVtype=='router'){
+					itemDetail = mFOffer(wifiDetails);
+				}else if(mVtype=='extender'){
+					itemDetail = mFOffer(extenderDetails);
+				}
+				
+				speech = 'The ' + mVtype + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want buy this product?' ;
+			}else if(tWarranty){
+				if(mVtype=='router'){
+					itemDetail = mFOffer(wifiDetails);
+				}else if(mVtype=='extender'){
+					itemDetail = mFOffer(extenderDetails);
+				}
+				
+				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want buy this product?' ;
+			};
+			// Speech formation ends response generation begins
+
+			tempContext = {
+				"name":"contextone",
+				"parameters":{
+					"devicetype":mVtype,
+					"feature":mVfeature,
+					"modelno":itemDetail.modelNo
+				}
+			};
+
+			finalResponse = {
+					"speech":speech,
+					"displayText":speech,
+					"contextOut":[tempContext]
+			}
+			res.send(finalResponse);
+
 		}
 
 	});
