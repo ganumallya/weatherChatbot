@@ -378,7 +378,7 @@ function iWrongDebitFunc(pno){
 app.post('/modem',function(req,res){
 	var mVaction = req.body.result.action;
 	var mContext = req.body.result.contexts;
-	var mVmodem='';
+	var mVmodel='';
 	var mVtype=[];
 	var mVCount;
 	var tBest=false;
@@ -499,6 +499,31 @@ app.post('/modem',function(req,res){
 			finalResponse = {
 					"speech":speech,
 					"displayText":speech,
+					"contextOut":[tempContext]
+			}
+			res.send(finalResponse);
+
+		}else if(mVaction == 'pFeature'){
+			mVtype = req.body.result.parameters.devicetype;
+			mVfeature = req.body.result.parameters.feature;
+			mVmodel = req.body.result.parameters.modelno;
+			if(mVtype=='router'){
+				speech=getDetails(wifiDetails,mVmodel,mVfeature);
+			}else if(mVtype=='extender'){
+				speech=getDetails(extenderDetails,mVmodel,mVfeature);
+			}
+			tempContext = {
+				"name":"contextone",
+				"parameters":{
+					"devicetype":mVtype,
+					"feature":mVfeature,
+					"modelno":mVmodel
+				}
+			};
+
+			finalResponse = {
+					"speech":speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
+					"displayText":speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
@@ -667,14 +692,18 @@ function getDetails(item,model,t){
 			}
 			break;
 
-		case 'device':
-			if(item=='wifiDetails'){
+		case 'connect':
+			
 				tempRes = getFeature(item,model,'connectDevices');
 				tempRes.speech= "This product can connect upto "+tempRes.result+" no. of devices";
-			}else if(item=='extenderDetails'){
+			
+			break;
+
+		case 'cover':
+			
 				tempRes = getFeature(item,model,'coverage');
 				tempRes.speech= "This product has coverage of "+tempRes.result+" Square meter.";
-			}
+			
 			break;
 
 		case 'speed':
@@ -707,6 +736,15 @@ function getDetails(item,model,t){
 			tempRes.speech= "This product have following features, "+tempRes.result;
 			break;
 
+		case 'stock':
+			tempRes = getFeature(item,model,'stock');
+			tempRes.speech= "This product have following features, "+tempRes.result;
+			break;
+
+		case 'refund':
+			tempRes = getFeature(item,model,'refund');
+			tempRes.speech= tempRes.result;
+			break;
 		default :
 			tempRes = {"found":0};
 			break;
