@@ -503,14 +503,19 @@ app.post('/modem',function(req,res){
 			}
 			res.send(finalResponse);
 
-		}else if(mVaction == 'pFeature'){
+		}else if(mVaction == 'iProductFeature'){
 			mVtype = req.body.result.parameters.devicetype;
 			mVfeature = req.body.result.parameters.feature;
 			mVmodel = req.body.result.parameters.modelno;
+			var tempresult;
 			if(mVtype=='router'){
-				speech=getDetails(wifiDetails,mVmodel,mVfeature);
+				tempresult=getDetails(wifiDetails,mVmodel,mVfeature);
 			}else if(mVtype=='extender'){
-				speech=getDetails(extenderDetails,mVmodel,mVfeature);
+				tempresult=getDetails(extenderDetails,mVmodel,mVfeature);
+			}
+
+			if(tempresult.found==0){
+				tempresult.speech = "Sorry , we dont have the information for that particular feature of the "+mVtype +" "+mVmodel;
 			}
 			tempContext = {
 				"name":"contextone",
@@ -522,8 +527,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
-					"displayText":speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
+					"speech":tempresult.speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
+					"displayText":tempresult.speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
