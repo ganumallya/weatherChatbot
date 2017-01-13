@@ -377,7 +377,7 @@ function iWrongDebitFunc(pno){
 
 app.post('/modem',function(req,res){
 	var mVaction = req.body.result.action;
-	var mContext = req.body.result.contexts[0];
+	var mContext = req.body.result.contexts;
 	var mVmodem='';
 	var mVtype=[];
 	var mVCount;
@@ -391,6 +391,7 @@ app.post('/modem',function(req,res){
 	var tMaxdevices = false;
 	var tShipping = false;
 	var tempContext;
+	var finalResponse;
 
 	var speech = '';
 	var itemDetail;
@@ -437,11 +438,7 @@ app.post('/modem',function(req,res){
 			}
 		};
 		console.log(mVCount);
-		if(mVCount==3){
-
-		}else if(mVCount==2){
-
-		}else if(mVCount==1){
+		
 		
 			if(tBest){
 				if(mVmodem=='Modem'){
@@ -501,7 +498,7 @@ app.post('/modem',function(req,res){
 				
 				
 			};
-		};
+	
 
 		tempContext = {
 			"name":"device",
@@ -520,82 +517,23 @@ app.post('/modem',function(req,res){
   						};
 		res.send(finalResponse);
 
-	}else if(mVaction == 'Aghz'){
-		mVmodem = req.body.result.parameters.eModem;
-		mVBand = parseInt(req.body.result.parameters.number);
-		if(mVmodem== 'Modem'){
-			itemDetail = mFghz(wifiDetails,mVBand);
+	}else if(mVaction == 'iDirect'){
+		mVtype = req.body.result.parameters.eDevice;
+			
+			tempContext = {
+				"name":"contextone",
+				"parameters":{
+					"devicetype":mVtype;
+				}
+			};
 
-		}else if(mVmodem =='Extender'){
-			itemDetail = mFghz(extenderDetails,mVBand);
-		}
-
-		if(itemDetail.found){
-			speech = 'We have a product that matches your Ghz Band Requirement '+ 'The model no. is '+ itemDetail.item.modelNo + ', and name of the product is '+itemDetail.item.name+'. Would you like to know anything more about this product or do you want me to send the URL for buying this product?';
-		}else{
-			speech = 'Sorry :( We couldnt find the product with the Ghz Band requirement that you were looking for , the closest we could find was '+itemDetail.item.name +'and Model No. is ' + itemDetail.item.modelNo+'. Would you like to know anything more about this product or do you want me to send the URL for buying this model';
-
-		}
-		tempContext = {
-			"name":"device",
-			"parameters":{
-				"id":itemDetail.id,
-				"type":mVmodem,
-				"model":itemDetail.modelNo
-			},
-			"lifespan":1
+			finalResponse = {
+					"speech":"Is there any specific model or feature that you are looking for? or do you want me to list out all the products?",
+					"displayText":"Is there any specific model or feature that you are looking for? or do you want me to list out all the products?",
+					"contextOut":[tempContext]
+			}
+			res.send(finalResponse);
 		};
-		var finalResponse = {
-  						"speech": speech,
-  						"displayText": speech,
-  						"contextOut":[mContext,tempContext]
-  						};
-		res.send(finalResponse);
-	}else if(mVaction =='productinfo'){
-		mVmodem = req.body.result.parameters.devicetype;
-		mContext = req.body.result.contexts;
-		var mVfeature = req.body.result.parameters.Efeature;
-		var mVdeviceId = req.body.result.parameters.deviceid;
-		var mVdeviceModel = req.body.result.parameters.devicemodel;
-		var tempSpeech='';
-		if(mVmodem=='Modem'){
-			tempSpeech =getDetails(wifiDetails,mVdeviceModel,mVfeature);
-			console.log(tempSpeech);
-		}else if(mVmodem=='Extender'){
-			tempSpeech = getDetails(extenderDetails,mVdeviceModel,mVfeature);
-		}
-		if(tempSpeech.found==0){
-			tempSpeech.speech = "Sorry , I dont have much info about that feature in that Product, you could ask me info about any other feature.";
-		}else{
-			tempSpeech.speech = tempSpeech.speech + '. Would you want to know anything more about this product, or do you want to buy this product?';
-
-		}
-		
-		var finalResponse;
-		tempContext = {
-			"name":"device",
-			"parameters":{
-				"id":mVdeviceId,
-				"type":mVmodem,
-				"model":mVdeviceModel
-			},
-			"lifespan":1
-		};
-		mContext.push(tempContext);
-		var finalResponse = {
-  						"speech": speech,
-  						"displayText": speech,
-  						"contextOut":[mContext,tempContext]
-  						};
-		var finalResponse = {
-  						"speech": tempSpeech.speech,
-  						"displayText": tempSpeech.speech,
-  						"contextOut":mContext
-  						};
-		res.send(finalResponse);
-
-	}
-});
 
 // Get Request for/Modem 
 
