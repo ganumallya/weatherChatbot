@@ -560,6 +560,7 @@ app.post('/modem',function(req,res){
 			}
 			res.send(finalResponse);
 		}else if(mVaction=='iCompare'){
+			console.log("entered compare block")
 			mVtype = req.body.result.parameters.devicetype;
 			var mvModels = req.body.result.parameters.modelno;
 			var tempSpeech='';
@@ -595,7 +596,7 @@ app.post('/modem',function(req,res){
 			for(var i=0;i<mvModels.length;i++){
 				tempSpeech += getFeature(mVtype,mvModels[i],'features').result+ '   ';
 			}
-		
+			console.log(tempSpeech);
 			tempContext = {
 				"name":"contextone",
 				"parameters":{
