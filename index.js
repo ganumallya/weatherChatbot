@@ -595,7 +595,7 @@ app.post('/modem',function(req,res){
 			for(var i=0;i<mvModels.length;i++){
 				tempSpeech += getFeature(mVtype,mvModels[i],'features').result+ '   ';
 			}
-		};
+		
 			tempContext = {
 				"name":"contextone",
 				"parameters":{
@@ -608,7 +608,9 @@ app.post('/modem',function(req,res){
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
-
+		};
+			
+		
 	});
 
 // Get Request for/Modem 
