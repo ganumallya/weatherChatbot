@@ -573,7 +573,7 @@ app.post('/modem',function(req,res){
 			for (var i=0;i<mvModels.length;i++){
 				mvModels[i] = mvModels[i].trim().toUpperCase();
 			}
-			tempSpeech +='<tr><td></td>'
+			tempSpeech +='<table><tr><td></td>'
 			for(var i=0;i<mvModels.length;i++){
 				tempSpeech += '<td>'+mvModels[i]+"</td>";
 			}
@@ -597,7 +597,7 @@ app.post('/modem',function(req,res){
 			for(var i=0;i<mvModels.length;i++){
 				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'features').result+ '</td>';
 			}
-			tempSpeech += '</tr>'
+			tempSpeech += '</tr></table>'
 			console.log(tempSpeech);
 			tempContext = {
 				"name":"contextone",
