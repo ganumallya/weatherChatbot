@@ -573,29 +573,31 @@ app.post('/modem',function(req,res){
 			for (var i=0;i<mvModels.length;i++){
 				mvModels[i] = mvModels[i].trim().toUpperCase();
 			}
+			tempSpeech +='<tr><td></td>'
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += '&nbsp;&nbsp;&nbsp;'+mvModels[i]+"&nbsp;&nbsp;&nbsp; ";
+				tempSpeech += '<td>'+mvModels[i]+"</td>";
 			}
-			tempSpeech+=",,Name :: ";
+			tempSpeech+="</tr><tr><td>Name</td>";
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += getFeature(mVtype,mvModels[i],'name').result + '   ';
+				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'name').result + '</td>';
 			}
-			tempSpeech+=",,Price :: ";
+			tempSpeech+="</tr><tr><td>Price</td> ";
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += getFeature(mVtype,mvModels[i],'price').result+ '   ';
+				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'price').result+ '</td>';
 			}
-			tempSpeech+=",,Warranty :: ";
+			tempSpeech+="</tr><tr><td>Warranty </td>";
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += getFeature(mVtype,mvModels[i],'warranty').result+ '   ';
+				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'warranty').result+ '</td>';
 			}
-			tempSpeech+=",,Rating :: ";
+			tempSpeech+="</tr><tr><td>Rating </td>";
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += getFeature(mVtype,mvModels[i],'rating').result+ '   ';
+				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'rating').result+ '</td>';
 			}
-			tempSpeech+=",,Features ::";
+			tempSpeech+="</tr><tr><td>Features </td>";
 			for(var i=0;i<mvModels.length;i++){
-				tempSpeech += getFeature(mVtype,mvModels[i],'features').result+ '   ';
+				tempSpeech += '<td>'+getFeature(mVtype,mvModels[i],'features').result+ '</td>';
 			}
+			tempSpeech += '</tr>'
 			console.log(tempSpeech);
 			tempContext = {
 				"name":"contextone",
