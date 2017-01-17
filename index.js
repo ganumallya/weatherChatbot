@@ -559,7 +559,55 @@ app.post('/modem',function(req,res){
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
-		}
+		}else if(mVaction=='iCompare'){
+			mVtype = req.body.result.parameters.devicetype;
+			var mvModels = req.body.result.parameters.modelno;
+			var tempSpeech='';
+			var mVtype1 = mVtype;
+			if(mVtype=='router'){
+				mVtype=wifiDetails;
+			}else{
+				mVtype=extenderDetails;
+			}
+			for (var i=0;i<mvModels.length;i++){
+				mvModels[i] = mvModels[i].trim().toUpperCase();
+			}
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += '&nbsp;&nbsp;&nbsp;'+mvModels[i]+"&nbsp;&nbsp;&nbsp; ";
+			}
+			tempSpeech+=",,Name :: ";
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += getFeature(mVtype,mvModels[i],'name').result + '   ';
+			}
+			tempSpeech+=",,Price :: ";
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += getFeature(mVtype,mvModels[i],'price').result+ '   ';
+			}
+			tempSpeech+=",,Warranty :: ";
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += getFeature(mVtype,mvModels[i],'warranty').result+ '   ';
+			}
+			tempSpeech+=",,Rating :: ";
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += getFeature(mVtype,mvModels[i],'rating').result+ '   ';
+			}
+			tempSpeech+=",,Features ::";
+			for(var i=0;i<mvModels.length;i++){
+				tempSpeech += getFeature(mVtype,mvModels[i],'features').result+ '   ';
+			}
+		};
+			tempContext = {
+				"name":"contextone",
+				"parameters":{
+					"devicetype":mVtype1
+				}
+			};
+		finalResponse = {
+					"speech":tempSpeech,
+					"displayText":tempSpeech,
+					"contextOut":[tempContext]
+			}
+			res.send(finalResponse);
 
 	});
 
@@ -670,7 +718,7 @@ function mFghz(item,ghz){
 
 function getFeature(item,model,feature){
 	var result;
-	console.log('asd '+model,feature);
+	console.log(model,feature);
 	for(var i=0;i<item.length;i++){
 		if (item[i].modelNo==model){
 			result = item[i][feature];
