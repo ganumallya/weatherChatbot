@@ -481,16 +481,19 @@ app.post('/modem',function(req,res){
 					itemDetail = mFOffer(wifiDetails);
 				}else if(mVtype=='extender'){
 					itemDetail = mFOffer(extenderDetails);
-				}
-				else if(tDevices){
+				}}
+				else{
 				if(mVtype=='router'){
 					itemDetail = wifiDetails[2];
+					console.log(itemDetail);
 				}else if(mVtype=='extender'){
 					itemDetail =extenderDetails[2];
-				}};
-				
-				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want buy this product?' ;
+				}
+					speech = 'The best' + mVtype + ' for this would be '+itemDetail.name + '. What more would you like to know about this model' ;
 			};
+				
+				
+			
 			// Speech formation ends response generation begins
 
 			tempContext = {
