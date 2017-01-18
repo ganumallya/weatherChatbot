@@ -433,7 +433,7 @@ app.post('/modem',function(req,res){
 				case 'warranty':
 					tWarranty=true;
 					break;
-				case 'devices':
+				case 'device':
 					tDevices=true;
 					break;
 			};
