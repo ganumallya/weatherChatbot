@@ -406,8 +406,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":"Is there any specific model or feature that you are looking for? or do you want me to list out all the"+mVtype+"?",
-					"displayText":"Is there any specific model or feature that you are looking for? or do you want me to list out all the"+mVtype+"?",
+					"speech":"Is there any specific type of "+mVtype+" looking for? or do you want me to list out all the "+mVtype+"?,, You can also ask me something like , Best Model, Cheapest one , and so on...",
+					"displayText":"Is there any specific type of "+mVtype+" looking for? or do you want me to list out all the "+mVtype+"?,, You can also ask me something like , Best Model, Cheapest one , and so on...",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
@@ -563,7 +563,7 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":speech + "Please enter the Model No. of the product that you would like to know more about",
+					"speech":speech + ",, Please enter the MODEL NO. of the product that you would like to know more about",
 					"displayText":speech,
 					"contextOut":[tempContext]
 			}
@@ -826,12 +826,12 @@ function getDetails(item,model,t){
 
 		case 'special':
 			tempRes = getFeature(item,model,'features');
-			tempRes.speech= "This product have following features, "+tempRes.result;
+			tempRes.speech= "This product have following features,, "+tempRes.result;
 			break;
 
 		case 'stock':
 			tempRes = getFeature(item,model,'stock');
-			tempRes.speech= "This product have following features, "+tempRes.result;
+			tempRes.speech= "This product has "+tempRes.result+" Stocks available";
 			break;
 
 		case 'refund':
