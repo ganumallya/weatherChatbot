@@ -482,6 +482,12 @@ app.post('/modem',function(req,res){
 				}else if(mVtype=='extender'){
 					itemDetail = mFOffer(extenderDetails);
 				}
+				else if(tDevices){
+				if(mVtype=='router'){
+					itemDetail = wifiDetails[2];
+				}else if(mVtype=='extender'){
+					itemDetail =extenderDetails[2];
+				}
 				
 				speech = 'The ' + mVmodem + 'with best warranty offer in netgear is '+itemDetail.name + '. It has '+itemDetail.warranty+ ' years of warranty. Would you like to know anything else about this product or do you want buy this product?' ;
 			};
@@ -492,7 +498,7 @@ app.post('/modem',function(req,res){
 				"parameters":{
 					"devicetype":mVtype,
 					"feature":mVfeature,
-					"modelno":itemDetail.modelNo
+					"modelno":itemDetail.modelNo || 'R9000'
 				}
 			};
 
