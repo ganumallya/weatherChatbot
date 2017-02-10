@@ -518,6 +518,7 @@ app.post('/modem',function(req,res){
 			mVtype = req.body.result.parameters.devicetype;
 			mVfeature = req.body.result.parameters.epFeature;
 			mVmodel = req.body.result.parameters.modelno;
+			mVmodel = mVmodel.toUpperCase();
 			var tempresult;
 			if(mVtype=='router'){
 				tempresult=getDetails(wifiDetails,mVmodel,mVfeature);
