@@ -540,8 +540,8 @@ app.post('/modem',function(req,res){
 
 			if(tempR>50){
 				finalResponse = {
-					"speech":tempresult.speech+' ,, What else would you like to know about this product ?'
-					"displayText":tempresult.speech,
+					"speech":tempresult.speech+' ,, What else would you like to know about this product ?',
+					"displayText":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"contextOut":[tempContext]
 			}
 			}else{
