@@ -482,7 +482,7 @@ app.post('/modem',function(req,res){
 				}else if(mVtype=='extender'){
 					itemDetail = mFOffer(extenderDetails);
 				}
-				speech = "In that case , i am sure you will like our "+itemDetail.name+". It has the warranty of 2 years. Would you like to know anything else about this product?' ;
+				speech = "In that case , i am sure you will like our "+itemDetail.name+". It has the warranty of 2 years. Would you like to know anything else about this product?" ;
 			}
 				else{
 				if(mVtype=='router'){
