@@ -406,8 +406,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":"Is there any specific type of "+mVtype+" looking for? or do you want me to list out all the "+mVtype+"?,, You can also ask me something like , Best Model, Cheapest one , and so on...",
-					"displayText":"Is there any specific type of "+mVtype+" looking for? or do you want me to list out all the "+mVtype+"?,, You can also ask me something like , Best Model, Cheapest one , and so on...",
+					"speech":"Is there any specific model no. you want to know more about or do i just list out all our "+mVtype+" Models?",
+					"displayText":"Is there any specific model no. you want to know more about or do i just list out all our "+mVtype+" Models?",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
@@ -449,7 +449,7 @@ app.post('/modem',function(req,res){
 
 				}
 				
-				speech = 'The best rated '+ mVtype+' in netgear is  ' + itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+				speech =  itemDetail.name + ' is the best one as per me. But dont take my word for it ,, Shoot me with any question to know more about this product. ,, PS : I hope you do buy it ;)' ;
 
 			}else if(tCheap){
 
@@ -459,7 +459,7 @@ app.post('/modem',function(req,res){
 					itemDetail = mFcheap(extenderDetails);
 				}
 				
-				speech = 'The Cheapest ' + mVtype + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+				speech = itemDetail.name + 'is the cheapest of all , do you want to know anything other then the price for this product? or do you want to straight away buy it ?' ;
 			}else if(tFast){
 				if(mVtype=='router'){
 					itemDetail = mFfast(wifiDetails);
@@ -467,7 +467,7 @@ app.post('/modem',function(req,res){
 					itemDetail = mFfast(extenderDetails);
 				}
 				
-				speech = 'The Fastest ' + mVtype + ' in netgear is '+itemDetail.name + '. Would you like to know anything else about this product or do you want to buy this product?' ;
+				speech = 'Every '+mVtype+' is fast enough in our catalouge, but "'+itemDetail.name + '"is just a step ahead of its colleagues and wins the competition in the Speed Category. ,,Would you like to know anything else about this product or do you want to buy this product?' ;
 			}else if(tOffer){
 				if(mVtype=='router'){
 					itemDetail = mFOffer(wifiDetails);
@@ -475,13 +475,15 @@ app.post('/modem',function(req,res){
 					itemDetail = mFOffer(extenderDetails);
 				}
 				
-				speech = 'The ' + mVtype + 'with best offer in netgear is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want buy this product?' ;
+				speech = 'The ' + mVtype + 'with best offer is '+itemDetail.name + '. It has '+itemDetail.discount+ '% discount on MRP. Would you like to know anything else about this product or do you want buy this product?' ;
 			}else if(tWarranty){
 				if(mVtype=='router'){
 					itemDetail = mFOffer(wifiDetails);
 				}else if(mVtype=='extender'){
 					itemDetail = mFOffer(extenderDetails);
-				}}
+				}
+				speech = "In that case , i am sure you will like our "+itemDetail.name+". It has the warranty of 2 years. Would you like to know anything else about this product?' ;
+			}
 				else{
 				if(mVtype=='router'){
 					itemDetail = wifiDetails[2];
@@ -489,7 +491,7 @@ app.post('/modem',function(req,res){
 				}else if(mVtype=='extender'){
 					itemDetail =extenderDetails[2];
 				}
-					speech = 'The best' + mVtype + ' for this would be '+itemDetail.name + '. What more would you like to know about this model' ;
+					speech = "In that case "+itemDetail.name + ' would be perfect for you . Let me know what else would you like to know about this product?' ;
 			};
 				
 				
