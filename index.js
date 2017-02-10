@@ -536,12 +536,22 @@ app.post('/modem',function(req,res){
 					"modelno":mVmodel
 				}
 			};
+			var tempR = (Math.random() * 10);
 
-			finalResponse = {
-					"speech":tempresult.speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
-					"displayText":tempresult.speech+'. Do you want to know anything else about the product or do you want to buy it ? :)',
+			if(tempR>50){
+				finalResponse = {
+					"speech":tempresult.speech+' ,, What else would you like to know about this product ?'
+					"displayText":tempresult.speech,
 					"contextOut":[tempContext]
 			}
+			}else{
+				finalResponse = {
+					"speech":tempresult.speech+'. Would you like to buy it ?',
+					"displayText":tempresult.speech+'. Would you like to buy it ?',
+					"contextOut":[tempContext]
+			}
+			}
+			
 			res.send(finalResponse);
 
 		}else if(mVaction == 'iList'){
@@ -553,7 +563,7 @@ app.post('/modem',function(req,res){
 			}else if(mVtype=='extender'){
 				tempType=extenderDetails;
 			}
-			speech = " Model No.	Name,,";
+			speech = "<b>Model No.</b>	<b>Name</b>,,";
 			for(var i=0;i<tempType.length;i++){
 				speech = speech + tempType[i].modelNo +"	"+tempType[i].name+" ,,";
 			}
@@ -565,8 +575,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":speech + ",, Please enter the MODEL NO. of the product that you would like to know more about",
-					"displayText":speech,
+					"speech":speech + ",, Please enter the MODEL NO. of the product from the list, for which you would like to know more about.",
+					"displayText":speech+",, Please enter the MODEL NO. of the product from the list, for which you would like to know more about.",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
