@@ -443,10 +443,13 @@ app.post('/modem',function(req,res){
 			if(tBest){
 				if(mVtype=='router'){
 					itemDetail = mFbest(wifiDetails);
+					console.log('entered Best Router');
 
 				}else if(mVtype=='extender'){
 					itemDetail = mFbest(extenderDetails);
 
+				}else{
+					itemDetail = wifiDetails[1];
 				}
 				
 				speech =  itemDetail.name + ' is the best one as per me. But dont take my word for it ,, Shoot me with any question to know more about this product. ,, PS : I hope you do buy it ;)' ;
