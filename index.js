@@ -581,6 +581,39 @@ app.post('/modem',function(req,res){
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
+		}else if(mVaction='Amodelno'){
+			var mVtype = req.body.result.parameters.devicetype;
+			var mvModels = req.body.result.parameters.modelno.toUpperCase();
+			var found = false;
+			if(mVtype=='router'){
+				for(var i=0;i<wifiDetails.length;i++){
+					if(wifiDetails[i].modelNo == mvModels){
+						found = true;
+					}
+				}
+			}else{
+				for(var i=0;i<extenderDetails.length;i++){
+					if(extenderDetails[i].modelNo == mvModels){
+						found = true;
+					}
+				}
+			}
+
+			if(found){
+				finalResponse = {
+					"speech":"Aha, Thats one of the best model , What would you like to know about that model. ?",
+					"displayText":"Aha, Thats one of the best model , What would you like to know about that model. ?",
+					"contextOut":[tempContext]
+						}
+					res.send(finalResponse);
+			}else{
+				finalResponse = {
+					"speech":"I am afraid, we dont have any Product with that Model No.,, Can you please cross check and enter the Model No. Again?",
+					"displayText":"I am afraid, we dont have any Product with that Model No.,, Can you please cross check and enter the Model No. Again?",
+					"contextOut":[tempContext]
+						}
+					res.send(finalResponse);
+			}
 		}else if(mVaction=='iCompare'){
 			console.log("entered compare block")
 			mVtype = req.body.result.parameters.devicetype;
