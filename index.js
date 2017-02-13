@@ -892,5 +892,5 @@ function getDetails(item,model,t){
 
 	}
 
-	return tempes;	
+	return tempRes;	
 }
