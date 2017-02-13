@@ -407,8 +407,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":"Is there any specific model no. you want to know more about or do i just list out all our "+mVtype+" Models?",
-					"displayText":"Is there any specific model no. you want to know more about or do i just list out all our "+mVtype+" Models?",
+					"speech":"Please enter the MODEL NO. you want to know more about or should i just list out all our "+mVtype+" Models?",
+					"displayText":"Please enter the MODEL NO. you want to know more about or should i just list out all our "+mVtype+" Models?",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
@@ -542,21 +542,14 @@ app.post('/modem',function(req,res){
 					"modelno":mVmodel
 				}
 			};
-			var tempR = (Math.random() * 10);
+			
 
-			if(tempR>50){
+			
 				finalResponse = {
 					"speech":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"displayText":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"contextOut":[tempContext]
-			}
-			}else{
-				finalResponse = {
-					"speech":tempresult.speech+'. Would you like to buy it ?',
-					"displayText":tempresult.speech+'. Would you like to buy it ?',
-					"contextOut":[tempContext]
-			}
-			}
+			
 			
 			res.send(finalResponse);
 
@@ -582,8 +575,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":speech + ",, Please enter the MODEL NO. of the product from the list, for which you would like to know more about.",
-					"displayText":speech+",, Please enter the MODEL NO. of the product from the list, for which you would like to know more about.",
+					"speech":speech + ",, Please enter the MODEL NO. from the list, for which you would like to know more about.",
+					"displayText":speech+",, Please enter the MODEL NO.  from the list, for which you would like to know more about.",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
@@ -608,8 +601,8 @@ app.post('/modem',function(req,res){
 
 			if(found){
 				finalResponse = {
-					"speech":"Aha, Thats one of the best model , What would you like to know about that model. ?",
-					"displayText":"Aha, Thats one of the best model , What would you like to know about that model. ?",
+					"speech":"Thats one of the best model , What would you like to know about that model. ?",
+					"displayText":"Thats one of the best model , What would you like to know about that model. ?",
 					"contextOut":[tempContext]
 						}
 					res.send(finalResponse);
@@ -807,7 +800,7 @@ function getDetails(item,model,t){
 	switch(t){
 		case 'price':
 			tempRes = getFeature(item,model,'price');
-			tempRes.speech = "The price of the product is " + tempRes.result;
+			tempRes.speech = "The price of that product is " + tempRes.result;
 			break;
 
 		case 'model':
@@ -817,7 +810,7 @@ function getDetails(item,model,t){
 
 		case 'warranty':
 			tempRes = getFeature(item,model,'warranty');
-			tempRes.speech = "This product has warranty for " + tempRes.result + 'years ';
+			tempRes.speech = "It has warranty of " + tempRes.result + 'years ';
 			break;
 
 		case 'release':
@@ -854,12 +847,12 @@ function getDetails(item,model,t){
 
 		case 'speed':
 			tempRes = getFeature(item,model,'maxspeed');
-			tempRes.speech= "This product has a max speed of "+tempRes.result;
+			tempRes.speech= "This product has a max speed of "+tempRes.result + ' GBPS;
 			break;
 
 		case 'discount':
 			tempRes = getFeature(item,model,'discount');
-			tempRes.speech= "This product has a discount of "+tempRes.result + '%';
+			tempRes.speech= "It has a discount of "+tempRes.result + '%';
 			break;
 
 		case 'rating':
@@ -870,7 +863,8 @@ function getDetails(item,model,t){
 		case 'shipping':
 			tempRes = getFeature(item,model,'shipping');
 			if(tempRes.result>0){
-				tempRes.speech= "This product has a shipping charges of  "+tempRes.result;
+				tempRes.speech= "It has a shipping charges of  "+tempRes.result+ "Ruppees" 
+				;
 			}else{
 				tempRes.speech= "This product does no shipping charges, Its absolutely free";
 			}
@@ -879,12 +873,12 @@ function getDetails(item,model,t){
 
 		case 'special':
 			tempRes = getFeature(item,model,'features');
-			tempRes.speech= "This product have following features,, "+tempRes.result;
+			tempRes.speech= "This product has following features,, "+tempRes.result;
 			break;
 
 		case 'stock':
 			tempRes = getFeature(item,model,'stock');
-			tempRes.speech= "This product has "+tempRes.result+" Stocks available";
+			tempRes.speech= "Only "+tempRes.result+" more are in the stock,buy it before the stock gets over ";
 			break;
 
 		case 'refund':
@@ -897,5 +891,5 @@ function getDetails(item,model,t){
 
 	}
 
-	return tempRes;	
+	return tempes;	
 }
