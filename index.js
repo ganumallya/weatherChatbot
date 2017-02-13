@@ -545,7 +545,7 @@ app.post('/modem',function(req,res){
 			
 				var temNum=(Math.random()*10);
 				console.log(temNum);
-				if (temNum<50){
+				if (temNum<5){
 					finalResponse = {
 					"speech":tempresult.speech,
 					"displayText":tempresult.speech,
