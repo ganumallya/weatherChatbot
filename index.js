@@ -586,7 +586,8 @@ app.post('/modem',function(req,res){
 			res.send(finalResponse);
 		}else if(mVaction='Amodelno'){
 			var mVtype = req.body.result.parameters.devicetype;
-			var mvModels = req.body.result.parameters.modelno.toUpperCase();
+			var mvModels = req.body.result.parameters.modelno;
+			mvModels = mvModels.toUpperCase();
 			var found = false;
 			if(mVtype=='router'){
 				for(var i=0;i<wifiDetails.length;i++){
