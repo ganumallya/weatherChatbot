@@ -549,6 +549,7 @@ app.post('/modem',function(req,res){
 					"speech":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"displayText":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"contextOut":[tempContext]
+				}
 			
 			
 			res.send(finalResponse);
@@ -847,7 +848,7 @@ function getDetails(item,model,t){
 
 		case 'speed':
 			tempRes = getFeature(item,model,'maxspeed');
-			tempRes.speech= "This product has a max speed of "+tempRes.result + ' GBPS;
+			tempRes.speech= "This product has a max speed of "+tempRes.result + ' GBPS;'
 			break;
 
 		case 'discount':
