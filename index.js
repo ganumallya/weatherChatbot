@@ -543,13 +543,22 @@ app.post('/modem',function(req,res){
 				}
 			};
 			
-
-			
-				finalResponse = {
+				var temNum=(Math.random()*10);
+				if (temNum>50){
+					finalResponse = {
+					"speech":tempresult.speech,
+					"displayText":tempresult.speech,
+					"contextOut":[tempContext]
+				}
+				}else {
+					finalResponse = {
 					"speech":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"displayText":tempresult.speech+' ,, What else would you like to know about this product ?',
 					"contextOut":[tempContext]
-				}
+							}
+					};
+			
+				
 			
 			
 			res.send(finalResponse);
@@ -867,7 +876,7 @@ function getDetails(item,model,t){
 				tempRes.speech= "It has a shipping charges of  "+tempRes.result+ "Ruppees" 
 				;
 			}else{
-				tempRes.speech= "This product does no shipping charges, Its absolutely free";
+				tempRes.speech= "This product does not have any shipping charges";
 			}
 			
 			break;
