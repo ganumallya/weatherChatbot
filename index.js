@@ -584,7 +584,7 @@ app.post('/modem',function(req,res){
 		}else if(mVaction=='Amodelno'){
 			console.log('Entered aModelno block');
 			var mVtype = req.body.result.parameters.devicetype;
-			var mvModels = req.body.result.parameters.modelno[0].toUpperCase();
+			var mvModels = req.body.result.parameters.modelno.toUpperCase();
 			var found = false;
 			if(mVtype=='router'){
 				for(var i=0;i<wifiDetails.length;i++){
