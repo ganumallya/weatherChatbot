@@ -377,6 +377,7 @@ function iWrongDebitFunc(pno){
 
 app.post('/modem',function(req,res){
 	var mVaction = req.body.result.action;
+	console.log(mVaction);
 	var mContext = req.body.result.contexts;
 	var mVmodel='';
 	var mVtype=[];
@@ -397,7 +398,7 @@ app.post('/modem',function(req,res){
 
 	if(mVaction == 'iDirect'){
 		mVtype = req.body.result.parameters.devicetype;
-			
+			console.log('Entered iDirect block');
 			tempContext = {
 				"name":"contextone",
 				"parameters":{
@@ -414,7 +415,7 @@ app.post('/modem',function(req,res){
 		}else if(mVaction == 'iFeature'){
 			mVtype = req.body.result.parameters.devicetype;
 			mVfeature = req.body.result.parameters.feature;
-
+			console.log('Entered iFeature block');
 			//decides the feature 
 
 				switch(mVfeature){
@@ -518,6 +519,7 @@ app.post('/modem',function(req,res){
 			res.send(finalResponse);
 
 		}else if(mVaction == 'iProductFeature'){
+			console.log('Entered iProductFeature block');
 			mVtype = req.body.result.parameters.devicetype;
 			mVfeature = req.body.result.parameters.epFeature;
 			mVmodel = req.body.result.parameters.modelno;
@@ -559,6 +561,7 @@ app.post('/modem',function(req,res){
 			res.send(finalResponse);
 
 		}else if(mVaction == 'iList'){
+			console.log('Entered iList block');
 			mVtype = req.body.result.parameters.devicetype;
 
 			var tempType;
@@ -584,10 +587,10 @@ app.post('/modem',function(req,res){
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
-		}else if(mVaction='Amodelno'){
+		}else if(mVaction=='Amodelno'){
+			console.log('Entered aModelno block');
 			var mVtype = req.body.result.parameters.devicetype;
-			var mvModels = req.body.result.parameters.modelno;
-			mvModels = mvModels.toUpperCase();
+			var mvModels = req.body.result.parameters.modelno[0].toUpperCase();
 			var found = false;
 			if(mVtype=='router'){
 				for(var i=0;i<wifiDetails.length;i++){
