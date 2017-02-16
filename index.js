@@ -811,7 +811,7 @@ function getDetails(item,model,t){
 	switch(t){
 		case 'price':
 			tempRes = getFeature(item,model,'price');
-			tempRes.speech = "The price of that product is " + tempRes.result;
+			tempRes.speech = "The price of that product is " + tempRes.result + "$";
 			break;
 
 		case 'model':
@@ -858,7 +858,7 @@ function getDetails(item,model,t){
 
 		case 'speed':
 			tempRes = getFeature(item,model,'maxspeed');
-			tempRes.speech= "This product has a max speed of "+tempRes.result + ' GBPS;'
+			tempRes.speech= "This product has a max speed of "+tempRes.result + ' GBPS'
 			break;
 
 		case 'discount':
