@@ -407,8 +407,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":"Please enter the MODEL NO. you want to know more about or should i just list out all our "+mVtype+" Models?",
-					"displayText":"Please enter the MODEL NO. you want to know more about or should i just list out all our "+mVtype+" Models?",
+					"speech":"Please enter the <b>Model No.</b> you want to know more about or should i just list out all our "+mVtype+" Models?",
+					"displayText":"Please enter the <b>Model No.</b> you want to know more about or should i just list out all our "+mVtype+" Models?",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
