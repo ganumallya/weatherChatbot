@@ -486,7 +486,7 @@ app.post('/modem',function(req,res){
 				}else if(mVtype=='extender'){
 					itemDetail = mFOffer(extenderDetails);
 				}
-				speech = "In that case , i am sure you will like our "+itemDetail.name+". It has the warranty of 2 years. Would you like to know anything else about this product?" ;
+				speech = itemDetail.name+" has a warranty of 2 years." ;
 			}
 				else{
 				if(mVtype=='router'){
@@ -613,8 +613,8 @@ app.post('/modem',function(req,res){
 
 			if(found){
 				finalResponse = {
-					"speech":"Thats one of the best model , What would you like to know about that model. ?",
-					"displayText":"Thats one of the best model , What would you like to know about that model. ?",
+					"speech":"Thats one of the premium model in that range , What would you like to know about that model. ?",
+					"displayText":"Thats one of the premium model in that range , What would you like to know about that model. ?",
 					"contextOut":[tempContext]
 						}
 					res.send(finalResponse);
