@@ -587,8 +587,8 @@ app.post('/modem',function(req,res){
 			};
 
 			finalResponse = {
-					"speech":speech + ",, Please enter the MODEL NO. from the list, for which you would like to know more about.",
-					"displayText":speech+",, Please enter the MODEL NO.  from the list, for which you would like to know more about.",
+					"speech":speech + ",, Please enter the <b>Model No. </b> from the list, for which you would like to know more about.",
+					"displayText":speech+",, Please enter the<b> Model No. </b> from the list, for which you would like to know more about.",
 					"contextOut":[tempContext]
 			}
 			res.send(finalResponse);
