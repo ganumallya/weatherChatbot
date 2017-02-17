@@ -574,10 +574,11 @@ app.post('/modem',function(req,res){
 			}else if(mVtype=='extender'){
 				tempType=extenderDetails;
 			}
-			speech = "<b>Model No.</b>	<b>Name</b>,,";
+			speech = "<table><tr><td><b>Model No.</b></td><td>	<b>Name</b></td></tr>";
 			for(var i=0;i<tempType.length;i++){
-				speech = speech + tempType[i].modelNo +"	"+tempType[i].name+" ,,";
+				speech = speech +'<tr><td>'+ tempType[i].modelNo +"</td><td>"+tempType[i].name+"</td><tr>";
 			}
+			speech = speech + '</table>';
 			tempContext = {
 				"name":"contextone",
 				"parameters":{
